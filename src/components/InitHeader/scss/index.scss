@@ -1,0 +1,123 @@
+@use "@/styles/mixins" as *;
+
+.nav-bar {
+  display: flex;
+  height: 50px;
+  margin: 20px var(--lowkey-main-space) 0 var(--lowkey-main-space);
+}
+
+.initHeader {
+  height: 100%;
+
+  &-wrapper {
+    @include flexBetween;
+    height: 100%;
+  }
+
+  &-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    flex: 1;
+  }
+
+  &-btn {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  &-initTitle {
+    @include flexLeft;
+    position: relative;
+    height: 100%;
+
+    &__panel {
+      @include flexLeft;
+      position: relative;
+    }
+
+    span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      white-space: nowrap;
+      transform: translate(0%, -50%);
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: bold;
+      -webkit-text-stroke: 1px #000;
+      font-style: italic;
+      // animation: identifierTest 4s infinite;
+
+      &:first-child {
+        position: relative;
+        // color: rgba(random(255), random(255), random(255), 1);
+        // color: #fff !important;
+        // visibility: hidden;
+      }
+
+      $quantity: 15;
+
+      @for $i from 1 through $quantity {
+        &:nth-child(#{$i}) {
+          animation: identifierTest 4s infinite $i * 0.012s;
+          // animation-timing-function: linear;
+          // color: rgba(random(255), random(255), random(255), 1);
+          z-index: calc(#{$quantity} / #{$i});
+        }
+      }
+    }
+  }
+}
+
+.avatarBox {
+  margin-left: 15px;
+
+  &-name {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: url(@/assets/images/gradient.webp);
+    background-size: cover;
+    font-size: 28px;
+    font-family: fantasy;
+  }
+}
+
+@keyframes identifierTest {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(20%, -20px);
+  }
+  20% {
+    transform: translate(40%, 20px);
+  }
+  30% {
+    transform: translate(60%, -20px);
+  }
+  40% {
+    transform: translate(80%, 20px);
+  }
+  50% {
+    transform: translate(100%, 0);
+  }
+  60% {
+    transform: translate(80%, 20px);
+  }
+  70% {
+    transform: translate(60%, -20px);
+  }
+  80% {
+    transform: translate(40%, 20px);
+  }
+  90% {
+    transform: translate(20%, -20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

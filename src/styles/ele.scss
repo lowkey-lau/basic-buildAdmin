@@ -1,0 +1,13 @@
+.el-table .info-row {
+  //   --el-table-tr-bg-color: var(--el-color-info-light-9);
+
+  //   .el-table__body-wrapper tr td.el-table-fixed-column--right {
+  //     --el-table-tr-bg-color: var(--el-color-info-light-9);
+  //   }
+
+  background-color: var(--el-color-info-light-9) !important;
+
+  td.el-table__cell {
+    background-color: var(--el-color-info-light-9) !important;
+  }
+}

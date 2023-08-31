@@ -1,0 +1,20 @@
+/* 初始化赋值 */
+@use "@/styles/variables";
+
+/* 字体 */
+// @use "@/styles/fonts";
+
+/* 初始化样式 */
+@use "@/styles/global";
+
+/* 全局组件样式 */
+@use "@/styles/app";
+
+/* 全局组件样式 */
+@use "@/styles/ele";
+
+/* 暗黑模式 */
+@use "@/styles/dark";
+
+/* 公用方法 */
+// @import "@/styles/mixins";
