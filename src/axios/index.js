@@ -96,34 +96,6 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
   return Axios(axiosConfig);
 };
 
-// const instance = axios.create({
-//   timeout: 50000, //请求超时时间
-//   baseURL: getUrl(),
-// });
-
-// instance.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
-// instance.defaults.headers.post["Accept"] = "application/json";
-
-// instance.interceptors.request.use(
-//   (config) => {
-//     let requestData = config.data || {};
-//     let adminToken = `${Local.get("adminToken")}`;
-//     adminToken && (config.headers.Authorization = adminToken);
-
-//     //post请求需要序列化
-//     if (config.method === "post") {
-//       requestData.user_id = Local.get("user_id");
-//       config.data = qs.stringify({
-//         ...requestData,
-//       });
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 export default createAxios;
 
 /**

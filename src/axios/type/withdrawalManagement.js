@@ -3,6 +3,8 @@
  */
 
 import createAxios from "@/axios/index.js";
+import Mock from "mockjs";
+import { withdrawalManagementData } from "@/mock/data.js";
 
 const withdrawalManagement = {
   // 提现审核
@@ -23,3 +25,12 @@ const withdrawalManagement = {
 };
 
 export default withdrawalManagement;
+
+Mock.mock("/web_backend/fetch_withdraw", {
+  code: 0,
+  data: {
+    count: 1,
+    page: 1,
+    data: withdrawalManagementData.withdrawalAudit.GetWithdrawAuditRecord,
+  },
+});

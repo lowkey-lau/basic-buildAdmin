@@ -25,15 +25,11 @@
           <el-descriptions-item label="注册时间/最近登录时间：" span="2">{{
             `${state.userInfo?.register_time} / ${state.userInfo?.last_login_time}`
           }}</el-descriptions-item>
-
           <el-descriptions-item label="账号状态：" span="2">
             <el-radio-group v-model="state.accountStatus" @change="radioChange">
               <el-radio :label="item.value" v-for="(item, index) in state.accountStatusList" :key="index">{{ item.label }}</el-radio>
             </el-radio-group>
           </el-descriptions-item>
-
-          <el-descriptions-item label="上级ID：">{{ state.userInfo?.invite_user_id }}</el-descriptions-item>
-          <el-descriptions-item label="上级者昵称：">{{ state.userInfo?.invite_user_name }}</el-descriptions-item>
         </el-descriptions>
 
         <el-divider />
@@ -47,21 +43,6 @@
             <el-descriptions-item label="商单收益">{{ state.userInfo?.offer_income }}</el-descriptions-item>
             <el-descriptions-item label="邀请收益">{{ state.userInfo?.invite_income }}</el-descriptions-item>
             <el-descriptions-item label="返佣收益">{{ state.userInfo?.commission_income }}</el-descriptions-item>
-            <el-descriptions-item label="激励视频次数">{{ state.userInfo?.video_count }}</el-descriptions-item>
-          </el-descriptions>
-
-          <el-descriptions direction="vertical" :column="6" border>
-            <el-descriptions-item label="生涯1级下限人数">{{ state.userInfo?.down_line_one }}</el-descriptions-item>
-            <el-descriptions-item label="生涯2级下限人数">{{ state.userInfo?.down_line_two }}</el-descriptions-item>
-            <el-descriptions-item label="生涯3级下限人数">{{ state.userInfo?.down_line_three }}</el-descriptions-item>
-            <el-descriptions-item label="生涯1级下限返佣">{{ state.userInfo?.commission_income_from_1 }}</el-descriptions-item>
-            <el-descriptions-item label="生涯2级下限返佣">{{ state.userInfo?.commission_income_from_2 }}</el-descriptions-item>
-            <el-descriptions-item label="生涯3级下限返佣">{{ state.userInfo?.commission_income_from_3 }}</el-descriptions-item>
-          </el-descriptions>
-
-          <el-descriptions direction="vertical" :column="2" border>
-            <el-descriptions-item label="生涯1级下限留存率">{{ state.userInfo?.retention_rate }}</el-descriptions-item>
-            <el-descriptions-item label="生涯1级下限任务完成率">{{ state.userInfo?.valid_offer_rate }}</el-descriptions-item>
           </el-descriptions>
         </el-space>
       </template>
@@ -74,14 +55,11 @@
 <script setup>
 import DialogByModifyResources from "./components/DialogByModifyResources.vue";
 
-import { onMounted, reactive, ref } from "vue";
+import { reactive } from "vue";
 import { ElMessageBox } from "element-plus";
-import { useServer } from "@/stores/server";
 import { GetFormatDateBySeconds } from "@/utils/timeTools";
 import { EleNBox } from "@/utils/ele";
 import $api from "@/axios/api.js";
-
-const server = useServer();
 
 const state = reactive({
   pageTitle: "用户信息 - 用户信息查询",
@@ -103,10 +81,6 @@ const state = reactive({
 });
 
 const searchData = async () => {
-  // if (state.userId == "") {
-  //   return EleNBox.warning("请输入搜索条件");
-  // }
-
   state.loading = true;
 
   try {
@@ -149,10 +123,7 @@ const radioChange = (e, i) => {
     type: "warning",
   })
     .then(async () => {
-      $api.userManagement.search.ModifyUserState({ query_user_id: state.userInfo.user_id, state: e }).then(() => {
-        EleNBox.sucess("操作成功");
-        state.accountOldStatus = e;
-      });
+      EleNBox.success("操作成功");
     })
     .catch(() => {
       state.accountStatus = state.accountOldStatus;

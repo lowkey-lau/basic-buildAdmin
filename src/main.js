@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-// import store from "./store";
 import "@/mock/index.js";
 import createAxios from "@/axios/index.js";
 
@@ -11,23 +10,14 @@ import ElementPlus from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import "element-plus/dist/index.css";
 
-import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-
 import { registerIcons } from "@/utils/common";
 
 import "default-passive-events";
 
 import "normalize.css/normalize.css";
 import "font-awesome/css/font-awesome.min.css";
-// import "./assets/css/globalElementUI.css";
 
 import "@/utils/console.js";
-
-// import "@/styles/init.scss";
-
-// 视频插件
-// import VueVideoPlayer from "@videojs-player/vue";
-// import "video.js/dist/video-js.css";
 
 // 引入全局组件
 import InitInput from "./components/InitInput/index.vue";

@@ -4,7 +4,7 @@
 
 import createAxios from "@/axios/index.js";
 import Mock from "mockjs";
-import { configurationData } from "@/assets/js/demoData.js";
+import { configurationData } from "@/mock/data.js";
 
 const configuration = {
   // 获取基础配置

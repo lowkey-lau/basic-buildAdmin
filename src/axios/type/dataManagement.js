@@ -3,6 +3,8 @@
  */
 
 import createAxios from "@/axios/index.js";
+import Mock from "mockjs";
+import { dataManagementData } from "@/mock/data.js";
 
 const dataManagement = {
   // 获取综合数据
@@ -12,34 +14,15 @@ const dataManagement = {
       data: params,
     });
   },
-  // 查询新用户综合数据
-  GetNewUserComprehensiveData(params) {
-    return createAxios({
-      url: `/web_backend/new_user_comprehensive_data`,
-      data: params,
-    });
-  },
-  // 获取邀请数据查询
-  GetInviteData(params) {
-    return createAxios({
-      url: `/web_backend/query_invite_data`,
-      data: params,
-    });
-  },
-  // 获取留存数据
-  GetRetainedData(params) {
-    return createAxios({
-      url: `/web_backend/query_retained_data`,
-      data: params,
-    });
-  },
-  // 获取在线数据
-  GetOnlineData(params) {
-    return createAxios({
-      url: `/web_backend/query_online_data`,
-      data: params,
-    });
-  },
 };
 
 export default dataManagement;
+
+Mock.mock("/web_backend/comprehensive_data", {
+  code: 0,
+  data: {
+    count: 1,
+    page: 1,
+    data: dataManagementData.GetComprehensiveData,
+  },
+});

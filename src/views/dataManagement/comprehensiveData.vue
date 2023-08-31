@@ -21,15 +21,11 @@
       <el-table-column min-width="120" align="center" prop="register_count" label="注册人数" />
       <el-table-column min-width="120" align="center" prop="invite_count" label="邀请注册人数" />
       <el-table-column min-width="120" align="center" prop="user_count" label="接单人数" />
-      <el-table-column min-width="120" align="center" prop="user_count_valid" label="有效接单人数" />
       <el-table-column min-width="120" align="center" prop="aver_count" label="人均接单人数" />
       <el-table-column min-width="120" align="center" prop="offer_award" label="商单奖励" />
       <el-table-column min-width="120" align="center" prop="invite_award" label="邀请奖励" />
-      <el-table-column min-width="120" align="center" prop="commission_award" label="分销返佣奖励" />
       <el-table-column min-width="120" align="center" prop="all_award" label="总奖励" />
       <el-table-column min-width="120" align="center" prop="all_withdraw" label="总提现" />
-      <el-table-column min-width="120" align="center" prop="withdraw_count" label="提现人数" />
-      <el-table-column min-width="160" align="center" prop="incentive_video_count" label="激励视频观看次数" />
     </el-table>
 
     <div class="initPagination">
@@ -77,7 +73,7 @@ const searchData = async () => {
     let returnResult = await getRequestData();
     state.requestResult = returnResult.data;
     state.requestResult.forEach((item) => {
-      item.time = GetFormatZoomDateBySeconds(item.time, "America/Sao_Paulo", "yyyy-MM-DD");
+      item.time = GetFormatZoomDateBySeconds(item.time, "Asia/Shanghai", "yyyy-MM-DD");
     });
     state.currentPage = returnResult.page;
     state.pageCount = returnResult.count;

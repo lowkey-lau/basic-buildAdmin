@@ -92,7 +92,9 @@ const init = async () => {
     state.activeData = await getUserActiveData();
     initEchats(state.type == 0 ? state.onlineData : state.activeData);
     state.loading = false;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const handleRadioChange = (e) => {

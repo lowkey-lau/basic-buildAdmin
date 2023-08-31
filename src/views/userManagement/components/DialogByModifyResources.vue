@@ -36,11 +36,16 @@ const $props = defineProps({
 const $emits = defineEmits(["changeVisible", "searchData"]);
 
 const state = reactive({
-  typeList: [],
+  typeList: [
+    {
+      label: "加钱",
+      value: 1,
+    },
+  ],
 });
 
 const dialogForm = reactive({
-  type: "",
+  type: 1,
   parameter: "",
 });
 
@@ -50,8 +55,8 @@ const formRules = reactive({
 });
 
 const init = () => {
-  state.typeList = server.adminConfig.user_modify_action;
-  dialogForm.type = state.typeList[0].value;
+  // state.typeList = server.adminConfig.user_modify_action;
+  // dialogForm.type = state.typeList[0].value;
 };
 
 const dialogFormRef = ref(null);
@@ -69,18 +74,19 @@ const modifyResources = () => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(() => {
-    $api.userManagement.search
-      .ModifyUserAssets({
-        query_user_id: $props.userInfo.user_id,
-        action: dialogForm.type,
-        param: dialogForm.parameter,
-      })
-      .then(() => {
-        EleNBox.success("操作成功");
-        dialogFormRef.value.resetFields();
-        $emits("changeVisible", 1, false);
-        $emits("searchData");
-      });
+    EleNBox.success("操作成功");
+    dialogFormRef.value.resetFields();
+    $emits("changeVisible", 1, false);
+    $emits("searchData");
+    // $api.userManagement.search
+    //   .ModifyUserAssets({
+    //     query_user_id: $props.userInfo.user_id,
+    //     action: dialogForm.type,
+    //     param: dialogForm.parameter,
+    //   })
+    //   .then(() => {
+
+    //   });
   });
 };
 

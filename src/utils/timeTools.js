@@ -46,7 +46,7 @@ export function GetTimestampBySeconds(date) {
  * @param { string } type 需要处理的日期格式
  * @returns
  */
-export function GetDatePickerValue(diffDays = 0, type = "yyyy-MM-DD", zoom = "America/Sao_Paulo") {
+export function GetDatePickerValue(diffDays = 0, type = "yyyy-MM-DD", zoom = "Asia/Shanghai") {
   let now = moment().tz(zoom).format(type);
   let before = GetBeforeDate(now, diffDays, type);
   return [before, now];
@@ -58,7 +58,7 @@ export function GetDatePickerValue(diffDays = 0, type = "yyyy-MM-DD", zoom = "Am
  * @param { string } type 需要处理的日期格式
  * @returns
  */
-export function GetDatePickerValueByHour(diffHours = 0, type = "yyyy-MM-DD", zoom = "America/Sao_Paulo") {
+export function GetDatePickerValueByHour(diffHours = 0, type = "yyyy-MM-DD", zoom = "Asia/Shanghai") {
   let now = moment().tz(zoom).format(type);
   let before = moment().subtract(diffHours, "hours").tz(zoom).format(type);
   return [before, now];
@@ -81,17 +81,17 @@ export function GetFormatUtcDateBySeconds(timestamp, type = "yyyy-MM-DD HH:mm:ss
  * @param { string } type 日期格式
  * @returns
  */
-export function GetFormatZoomDateBySeconds(timestamp, zoom = "America/Sao_Paulo", type = "yyyy-MM-DD HH:mm:ss") {
+export function GetFormatZoomDateBySeconds(timestamp, zoom = "Asia/Shanghai", type = "yyyy-MM-DD HH:mm:ss") {
   return moment.unix(timestamp).tz(zoom).format(type);
 }
 
 /**
  * 传入时间字符串，根据时区代号返回时间戳（秒）
  * @param { string } date 日期
- * @param { string } zoom 时区代号 （默认America/Sao_Paulo）
+ * @param { string } zoom 时区代号 （默认Asia/Shanghai）
  * @returns
  */
-export function GetTimestampByZoom(date, zoom = "America/Sao_Paulo") {
+export function GetTimestampByZoom(date, zoom = "Asia/Shanghai") {
   const formatTime = moment(date).format("yyyy-MM-DD HH:mm:ss");
   return moment.tz(formatTime, zoom).unix();
 }
@@ -99,10 +99,10 @@ export function GetTimestampByZoom(date, zoom = "America/Sao_Paulo") {
 /**
  * 传入时间字符串，根据时区代号返回当天最后一秒的时间戳（秒）
  * @param { string } date 日期
- * @param { string } zoom 时区代号 （默认America/Sao_Paulo）
+ * @param { string } zoom 时区代号 （默认Asia/Shanghai）
  * @returns
  */
-export function GetEndTimestampByZoom(date, zoom = "America/Sao_Paulo") {
+export function GetEndTimestampByZoom(date, zoom = "Asia/Shanghai") {
   const formatTime = moment(date).endOf("days").format("yyyy-MM-DD HH:mm:ss");
   return moment.tz(formatTime, zoom).unix();
 }

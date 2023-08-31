@@ -4,7 +4,7 @@
 
 import createAxios from "@/axios/index.js";
 import Mock from "mockjs";
-import { dashboardData } from "@/assets/js/demoData.js";
+import { dashboardData } from "@/mock/data.js";
 
 const dashboard = {
   GetUserOnlineData(params) {
@@ -30,5 +30,5 @@ const dashboard = {
 export default dashboard;
 
 Mock.mock("/web_backend/query_online_data", { code: 0, data: dashboardData.GetUserOnlineData });
-Mock.mock("/web_backend/query_date_active_data", { code: 0, data: dashboardData.GetCollectedData });
+Mock.mock("/web_backend/query_date_active_data", { code: 0, data: dashboardData.GetUserActiveData });
 Mock.mock("/web_backend/query_overview_data", { code: 0, data: dashboardData.GetCollectedData });

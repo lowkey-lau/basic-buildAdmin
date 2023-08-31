@@ -3,6 +3,8 @@
  */
 
 import createAxios from "@/axios/index.js";
+import Mock from "mockjs";
+import { userManagementData } from "@/mock/data.js";
 
 const userManagement = {
   // 用户信息查询
@@ -13,39 +15,9 @@ const userManagement = {
         data: params,
       });
     },
-    ModifyUserAssets(params) {
-      return createAxios({
-        url: `/web_backend/modify_user_info`,
-        data: params,
-      });
-    },
-    ModifyUserState(params) {
-      return createAxios({
-        url: `/web_backend/modify_user_state`,
-        data: params,
-      });
-    },
-  },
-
-  // 用户数据（天）
-  userDataDaily: {
-    GetUserData(params) {
-      return createAxios({
-        url: `/web_backend/query_user_data`,
-        data: params,
-      });
-    },
-  },
-
-  // 用户金币流水
-  userGoldCoinTurnover: {
-    GetUserFlow(params) {
-      return createAxios({
-        url: `/web_backend/query_user_flow`,
-        data: params,
-      });
-    },
   },
 };
 
 export default userManagement;
+
+Mock.mock("/web_backend/query_user_info", { code: 0, data: userManagementData.search.GetUserInfo });
