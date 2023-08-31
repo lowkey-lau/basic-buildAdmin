@@ -4,7 +4,7 @@
     <div class="quickItemBox-container">
       <div class="quickItemBox-item" v-for="(item, index) in state.itemList" :key="index" @click="toPath(item.path)">
         <div class="quickItemBox-icon">
-          <Icon :name="item.icon" size="36" />
+          <Icon :name="item.icon" size="36" color="config.getColorVal('iconColor')" />
         </div>
         <div class="quickItemBox-label">{{ item.label }}</div>
       </div>
@@ -15,30 +15,27 @@
 <script setup>
 import { onMounted, reactive, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { useConfig } from "@/stores/config";
 
+const config = useConfig();
 const router = useRouter();
 
 const state = reactive({
   itemList: [
     {
-      label: "审核提现",
-      icon: "el-icon-Stamp",
-      path: "/withdrawalManagement/withdrawalAudit",
-    },
-    {
-      label: "新增Offer",
-      icon: "el-icon-Ticket",
-      path: "/orderManagement/orderList",
-    },
-    {
-      label: "用户反馈",
-      icon: "el-icon-ChatDotSquare",
-      path: "/operationsManagement/userFeedback",
+      label: "综合数据",
+      icon: "el-icon-DataAnalysis",
+      path: "/dataManagement/comprehensiveData",
     },
     {
       label: "用户查询",
       icon: "el-icon-UserFilled",
       path: "/userManagement/search",
+    },
+    {
+      label: "提现审核",
+      icon: "el-icon-Stamp",
+      path: "/withdrawalManagement/withdrawalAudit",
     },
   ],
 });

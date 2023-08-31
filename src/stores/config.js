@@ -54,6 +54,9 @@ export const useConfig = defineStore(
       headerBarBackground: ["#ffffff", "#1d1e1f"],
       // 顶栏悬停时背景色
       headerBarHoverBackground: ["#f5f5f5", "#18222c"],
+
+      // 图标颜色
+      iconColor: ["#000000", "#f5f5f5"],
     });
 
     const lang = reactive({
