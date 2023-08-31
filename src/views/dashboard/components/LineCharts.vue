@@ -137,7 +137,7 @@ const initEchats = (props) => {
   let seriesList = [];
 
   legendList = Object.keys(props.data);
-  xAxisList = props.date.map((item) => GetFormatZoomDateBySeconds(item));
+  xAxisList = props.date;
 
   seriesList = legendList.map((item) => {
     return {
