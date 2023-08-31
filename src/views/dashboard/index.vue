@@ -2,10 +2,10 @@
   <div class="main">
     <LineCharts />
 
-    <div class="filterPanel">
+    <el-space class="filterPanel" :size="16">
       <InitDatePicker v-model="state.datePickerValue" title="归因日期" />
       <el-button type="primary" @click="init()" :loading="state.loading">查询</el-button>
-    </div>
+    </el-space>
 
     <ItemData :data="state.tableData" v-if="state.tableData" />
 

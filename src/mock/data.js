@@ -53,7 +53,7 @@ export const dashboardData = {
     "version_data|3": [
       {
         "user_count|1-100": 1,
-        "version|+1": ["v1.01", "v1.02", "v1.03"],
+        "version|+1": ["1.01", "1.02", "1.03"],
       },
     ],
   }),

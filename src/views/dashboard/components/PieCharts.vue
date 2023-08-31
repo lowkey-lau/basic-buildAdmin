@@ -11,13 +11,15 @@
 
 <script setup>
 import { onMounted, reactive, watch } from "vue";
-import * as echarts from "echarts";
 import { v4 as uuidv4 } from "uuid";
-console.log(uuidv4());
+import { useConfig } from "@/stores/config";
+import * as echarts from "echarts";
 
+const config = useConfig();
 const state = reactive({
   uuid: uuidv4(),
   type: 0,
+  myChart: null,
   datePickerValue: [],
   channelList: [],
   channel: "",
@@ -60,28 +62,22 @@ const echartsOption = reactive({
       labelLine: {
         show: false,
       },
-      data: [
-        { value: 1048, name: "Search Engine" },
-        { value: 735, name: "Direct" },
-        { value: 580, name: "Email" },
-        { value: 484, name: "Union Ads" },
-        { value: 300, name: "Video Ads" },
-      ],
+      data: [],
     },
   ],
 });
 
 const initEchats = (props) => {
-  let myChart = echarts.init(document.getElementById(`id_${state.uuid}`));
+  state.myChart = echarts.init(document.getElementById(`id_${state.uuid}`), config.layout.isDark ? "dark" : "");
   let data = props.map((item) => {
     return {
-      name: item.version,
+      name: `v${item.version}`,
       value: item.user_count,
     };
   });
   echartsOption.series[0].data = data;
 
-  myChart.setOption(echartsOption, true);
+  state.myChart.setOption(echartsOption, true);
   window.onresize = function () {
     //自适应大小
     myChart.resize();
@@ -99,14 +95,14 @@ watch(
   }
 );
 
-// export default {
-//   props: {
-//     echartsData: Array,
-//   },
-//   setup(props) {
-
-//   },
-// };
+watch(
+  () => config.layout.isDark,
+  (newValue) => {
+    state.myChart.dispose();
+    state.myChart = echarts.init(document.getElementById(`id_${state.uuid}`), newValue ? "dark" : "");
+    state.myChart.setOption(echartsOption, true);
+  }
+);
 </script>
 
 <style lang="scss" scoped>

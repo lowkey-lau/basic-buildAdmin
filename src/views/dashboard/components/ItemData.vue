@@ -59,14 +59,14 @@ watch(
 <style lang="scss" scoped>
 @use "@/styles/mixins" as *;
 .itemDataBox {
-  width: 100%;
-  width: calc(100% + 20px);
-  margin-left: -10px;
+  // width: 100%;
+  // width: calc(100% + 20px);
+  // margin-left: -10px;
   margin-bottom: 20px;
 
   &-container {
     @include flexCenter;
-    padding: 0 10px;
+    padding: 0 12px;
   }
 
   &-item {
@@ -76,7 +76,7 @@ watch(
     border-radius: var(--el-border-radius-base);
     padding: 24px;
     flex: 1;
-    margin-right: 30px;
+    margin-right: 12px;
     cursor: pointer;
 
     &:last-child {
@@ -90,7 +90,7 @@ watch(
       -o-transform: translateY(-4px) scale(1.02);
       transform: translateY(-4px) scale(1.02);
       z-index: 999;
-      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0px 12px rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -103,7 +103,6 @@ watch(
   &-content {
     @include flexCenter;
     align-items: flex-end;
-    color: #2c3f5d;
     width: 100%;
     margin-top: 15px;
   }

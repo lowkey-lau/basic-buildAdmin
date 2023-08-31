@@ -9,7 +9,7 @@
           </el-radio-group>
         </div>
         <div class="lineChartsBox-fitler">
-          <el-space wrap :size="20">
+          <el-space wrap :size="16">
             <InitSelect v-model="state.channel" title="渠道" :list="state.channelList" />
             <InitDatePicker v-model="state.datePickerValue" title="时间" type="datetimerange" />
             <el-button type="primary" @click="init()" :loading="state.loading">查询</el-button>
@@ -25,13 +25,15 @@
 
 <script setup>
 import { onMounted, reactive, watch } from "vue";
-import * as echarts from "echarts";
 import { v4 as uuidv4 } from "uuid";
 import { GetFormatZoomDateBySeconds, GetDatePickerValue, GetTimestampByZoom, GetEndTimestampByZoom } from "@/utils/timeTools";
 import { useServer } from "@/stores/server";
+import { useConfig } from "@/stores/config";
 import $api from "@/axios/api.js";
+import * as echarts from "echarts";
 
 const server = useServer();
+const config = useConfig();
 
 const state = reactive({
   loading: true,
@@ -39,6 +41,9 @@ const state = reactive({
   type: 0,
   onlineData: {},
   activeData: {},
+
+  myChart: null, //实例
+
   datePickerValue: [],
   channelList: [],
   channel: "",
@@ -49,6 +54,7 @@ const $props = defineProps({
 });
 
 const echartsOption = reactive({
+  animation: true,
   legend: {
     data: [],
   },
@@ -86,15 +92,12 @@ const echartsOption = reactive({
 
 const init = async () => {
   state.loading = true;
-
   try {
     state.onlineData = await getUserOnlineData();
     state.activeData = await getUserActiveData();
     initEchats(state.type == 0 ? state.onlineData : state.activeData);
     state.loading = false;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 const handleRadioChange = (e) => {
@@ -128,13 +131,14 @@ const getUserActiveData = () => {
 };
 
 const initEchats = (props) => {
-  let myChart = echarts.init(document.getElementById(`id_${state.uuid}`));
+  state.myChart = echarts.init(document.getElementById(`id_${state.uuid}`), config.layout.isDark ? "dark" : "");
   let legendList = [];
   let xAxisList = [];
   let seriesList = [];
 
   legendList = Object.keys(props.data);
-  xAxisList = props.date;
+  xAxisList = props.date.map((item) => GetFormatZoomDateBySeconds(item));
+
   seriesList = legendList.map((item) => {
     return {
       name: item,
@@ -147,7 +151,7 @@ const initEchats = (props) => {
   echartsOption.xAxis.data = xAxisList;
   echartsOption.series = seriesList;
 
-  myChart.setOption(echartsOption, true);
+  state.myChart.setOption(echartsOption, true);
   window.onresize = function () {
     //自适应大小
     myChart.resize();
@@ -162,21 +166,14 @@ onMounted(() => {
   init();
 });
 
-// watch(
-//   () => $props.echartsData,
-//   (newProps) => {
-//     initEchats(newProps);
-//   }
-// );
-
-// export default {
-//   props: {
-//     echartsData: Array,
-//   },
-//   setup(props) {
-
-//   },
-// };
+watch(
+  () => config.layout.isDark,
+  (newValue) => {
+    state.myChart.dispose();
+    state.myChart = echarts.init(document.getElementById(`id_${state.uuid}`), newValue ? "dark" : "");
+    state.myChart.setOption(echartsOption, true);
+  }
+);
 </script>
 
 <style lang="scss" scoped>
