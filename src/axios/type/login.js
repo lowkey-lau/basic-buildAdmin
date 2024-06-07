@@ -9,7 +9,14 @@ const login = {
   // 登录
   Login(params) {
     return createAxios({
-      url: `${requestUrl[params.server]}/web_backend/login`,
+      url: `${requestUrl[params.server]}/api/account/login`,
+      data: params.params,
+    });
+  },
+  // 注册
+  Register(params) {
+    return createAxios({
+      url: `/api/account/register`,
       data: params.params,
     });
   },

@@ -19,7 +19,7 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
   const router = useRouter();
 
   const Axios = axios.create({
-    baseURL: "",
+    baseURL: getUrl(),
     method: axiosConfig.method || "POST",
     timeout: 1000 * 50,
     headers: {
@@ -49,19 +49,20 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
 
   Axios.interceptors.request.use(
     (config) => {
-      let requestData = config.data || {};
+      // let requestData = config.data || {};
 
-      if (config.headers) {
-        const token = adminInfo.getToken();
-        if (token) config.headers.Authorization = token;
+      if (config.headers && axiosConfig.headers) {
+        axiosConfig.headers["Content-Type"] = axiosConfig.headers;
+        // const token = adminInfo.getToken();
+        // if (token) config.headers.Authorization = token;
       }
 
-      if (config.method === "post") {
-        requestData.user_id = adminInfo.getUserId();
-        config.data = qs.stringify({
-          ...requestData,
-        });
-      }
+      // if (config.method === "post") {
+      //   requestData.user_id = adminInfo.getUserId();
+      //   config.data = qs.stringify({
+      //     ...requestData,
+      //   });
+      // }
 
       return config;
     },

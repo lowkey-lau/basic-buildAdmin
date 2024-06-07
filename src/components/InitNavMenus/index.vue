@@ -5,7 +5,7 @@
       <Icon :color="config.getColorVal('headerBarTabColor')" class="nav-menu-icon" v-else name="el-icon-FullScreen" size="18" />
     </div>
 
-    <el-popover
+    <!-- <el-popover
       @show="onCurrentNavMenu(true, 'system')"
       @hide="onCurrentNavMenu(false, 'system')"
       placement="bottom"
@@ -25,7 +25,7 @@
           <el-button @click="getAdminConfig" type="warning" plain :loading="state.configLoading">获取最新配置</el-button>
         </div>
       </div>
-    </el-popover>
+    </el-popover> -->
 
     <el-popover
       @show="onCurrentNavMenu(true, 'adminInfo')"

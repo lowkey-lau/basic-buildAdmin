@@ -24,7 +24,9 @@ import InitInput from "./components/InitInput/index.vue";
 import InitSelect from "./components/InitSelect/index.vue";
 import InitDatePicker from "./components/InitDatePicker/index.vue";
 import InitData from "./components/InitData/index.vue";
-import Particles from "vue3-particles";
+
+import Particles from "@tsparticles/vue3";
+import { loadFull } from "tsparticles";
 
 async function start() {
   const app = createApp(App);
@@ -34,7 +36,12 @@ async function start() {
   app.use(ElementPlus, {
     locale: zhCn,
   });
-  app.use(Particles);
+  app.use(Particles, {
+    init: async (engine) => {
+      await loadFull(engine); // you can load the full tsParticles library from "tsparticles" if you need it
+      // await loadSlim(engine); // or you can load the slim version from "tsparticles-slim" if don't need Shapes or Animations
+    },
+  });
 
   // 全局注册组件
   registerIcons(app);

@@ -10,7 +10,7 @@
                 <Icon color="#000" name="el-icon-User" size="20px" />
               </div>
             </template>
-            <el-input v-model="form.username" clearable placeholder="用户名" />
+            <el-input v-model="form.account" clearable placeholder="用户名" />
           </el-form-item>
           <el-form-item>
             <template #label>
@@ -37,15 +37,21 @@
             <div class="initButton-btn" @click="handleLogin()"><span>登录</span></div>
           </div>
         </div>
+
+        <el-link type="primary" style="margin-top: 12px" @click="changeVisible(1, true)">新增账户</el-link>
       </div>
     </div>
 
-    <vue-particles id="tsparticles" :particlesInit="particlesInit" :options="particlesConfig" />
+    <vue-particles id="tsparticles" :particlesLoaded="particlesLoaded" :options="particlesConfig" />
+
+    <DialogByRegister :visible="visibleByRegister" @changeVisible="changeVisible" />
   </div>
 </template>
 
 <script setup>
-import { computed, reactive } from "vue";
+import DialogByRegister from "./components/DialogByRegister.vue";
+
+import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useServer } from "@/stores/server";
 import { useAdminInfo } from "@/stores/adminInfo";
@@ -64,13 +70,15 @@ onKeyStroke("Enter", (e) => {
   }
 });
 
+const visibleByRegister = ref(false);
+
 const server = useServer();
 const adminInfo = useAdminInfo();
 const router = useRouter();
 
 const form = reactive({
-  username: "admin",
-  password: "admin",
+  account: "",
+  password: "",
   server: "dev",
 });
 
@@ -79,10 +87,10 @@ const serverList = [
     value: "dev",
     label: "测试环境",
   },
-  {
-    value: "local",
-    label: "本地环境",
-  },
+  // {
+  //   value: "local",
+  //   label: "本地环境",
+  // },
 ];
 
 const handleLogin = () => {
@@ -90,35 +98,46 @@ const handleLogin = () => {
 
   let data = {
     params: {
-      username: form.username,
+      account: form.account,
       password: form.password,
     },
     server: form.server,
   };
 
   server.dataFill({ server: form.server });
-  adminInfo.dataFill(Object.assign({ token: "test123456789" }, { nickname: form.username }));
-  EleNBox.success("登录成功");
-  router.push("/");
-  console.warning("test123456789", "当前登录Token");
+  // router.push("/");
 
-  EleLoading.hide();
-
-  // $api.login
-  //   .Login(data)
-  //   .then((res) => {
-
-  //   })
-  //   .finally(() => {
-  //     EleLoading.hide();
-  //   });
+  $api.login
+    .Login(data)
+    .then((res) => {
+      adminInfo.dataFill(Object.assign({ token: res.data.token }, { account: form.account }));
+      EleNBox.success("登录成功");
+      EleLoading.hide();
+      console.warning(res.data.token, "当前登录Token");
+      router.push("/");
+    })
+    .finally(() => {
+      EleLoading.hide();
+    });
 };
 
-const particlesInit = async (engine) => {
-  await loadFull(engine);
+const changeVisible = (type, e) => {
+  switch (type) {
+    case 1:
+      visibleByRegister.value = e;
+      break;
+  }
 };
 
-const clickDisabled = computed(() => form.username == "" || form.password == "");
+// const particlesLoaded = async (engine) => {
+//   await loadFull(engine);
+// };
+
+const particlesLoaded = async (container) => {
+  console.log("Particles container loaded", container);
+};
+
+const clickDisabled = computed(() => form.account == "" || form.password == "");
 </script>
 
 <style lang="scss" scoped>
