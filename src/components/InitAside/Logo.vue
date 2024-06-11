@@ -5,7 +5,7 @@
     </div>
 
     <div class="logoBox-content" v-if="!config.layout.menuCollapse">
-      <div class="logoBox-title">{{ config.website.title }}</div>
+      <div class="logoBox-title">{{ adminInfo.account }}</div>
       <el-tag size="small">{{ server.server }}</el-tag>
     </div>
 
@@ -22,9 +22,11 @@
 <script setup>
 import { useConfig } from "@/stores/config";
 import { useServer } from "@/stores/server";
+import { useAdminInfo } from "@/stores/adminInfo";
 
 const config = useConfig();
 const server = useServer();
+const adminInfo = useAdminInfo();
 
 const toggleMenuCollapse = () => {
   if (config.layout.shrink && !config.layout.menuCollapse) {

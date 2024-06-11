@@ -36,9 +36,9 @@ onMounted(async () => {
     return router.push({ name: "adminLogin" });
   }
 
-  if (!server.adminConfig) {
-    await server.getAdminConfig();
-  }
+  // if (!server.adminConfig) {
+  //   await server.getAdminConfig();
+  // }
 
   handleAdminRoute(menus);
 

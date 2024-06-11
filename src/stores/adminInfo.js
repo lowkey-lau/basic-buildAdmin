@@ -10,6 +10,7 @@ export const useAdminInfo = defineStore("adminInfo", {
       avatar: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       last_login_time: "",
       refresh_token: "",
+      account: "",
 
       // 是否是superAdmin，用于判定是否显示终端按钮等，不做任何权限判断
       super: false,

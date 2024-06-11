@@ -28,6 +28,8 @@ import InitData from "./components/InitData/index.vue";
 import Particles from "@tsparticles/vue3";
 import { loadFull } from "tsparticles";
 
+// import "../global.css";
+
 async function start() {
   const app = createApp(App);
   app.use(pinia);

@@ -12,6 +12,7 @@
     // "esModuleInterop": true,
     // "lib": ["esnext", "dom"],
     // "isolatedModules": true,
+    "noUnusedLocals": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

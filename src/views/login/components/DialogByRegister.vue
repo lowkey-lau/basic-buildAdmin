@@ -61,10 +61,10 @@ const $emits = defineEmits(["changeVisible"]);
 const state = reactive({
   dialogForm: {
     avatar: "",
-    account: "lowkey2",
-    password: "123456",
-    nickname: "lowkey2",
-    email: "lowkey2",
+    account: "",
+    password: "",
+    nickname: "",
+    email: "",
     sex: 0,
   },
   formData: {
