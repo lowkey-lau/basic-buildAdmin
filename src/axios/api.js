@@ -3,7 +3,7 @@ import configuration from "./type/configuration";
 import dashboard from "./type/dashboard";
 import dataManagement from "./type/dataManagement";
 import userManagement from "./type/userManagement";
-import withdrawalManagement from "./type/withdrawalManagement";
+import tronManagement from "./type/tronManagement";
 
 /**
  * 导出接口
@@ -14,5 +14,5 @@ export default {
   dashboard,
   dataManagement,
   userManagement,
-  withdrawalManagement,
+  tronManagement,
 };
