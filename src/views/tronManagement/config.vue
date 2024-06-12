@@ -81,12 +81,12 @@ const list = reactive([
     ],
   },
   {
-    title: "获取用户TRC20余额",
+    title: "获取用户TRC-20余额",
     loading: false,
     res: null,
     formList: [
       {
-        label: "TRC20合约地址",
+        label: "TRC-20合约地址",
         value: "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj",
         param: "contractAddress",
       },
@@ -122,15 +122,60 @@ const list = reactive([
     ],
   },
   {
-    title: "获取最新的区块",
+    title: "获取最新区块信息",
     loading: false,
     res: null,
   },
+  {
+    title: "主网币（TRX）转账",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "私钥",
+        value: "",
+        param: "privateKey",
+      },
+      {
+        label: "目标地址",
+        value: "",
+        param: "toAddress",
+      },
+      {
+        label: "数量",
+        value: "",
+        param: "quantity",
+      },
+    ],
+  },
+  {
+    title: "代币（TRX-20）转账",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "私钥",
+        value: "",
+        param: "privateKey",
+      },
+      {
+        label: "合约地址",
+        value: "",
+        param: "contractAddress",
+      },
+      {
+        label: "目标地址",
+        value: "",
+        param: "toAddress",
+      },
+      {
+        label: "数量",
+        value: "",
+        param: "quantity",
+      },
+    ],
+  },
 ]);
-
-const form = reactive({
-  privateKey: "",
-});
 
 const handleFunc = async (key = 0) => {
   let params = {};
@@ -173,9 +218,14 @@ const handleFunc = async (key = 0) => {
       case 7:
         list[key].res = await handleGetNowBlock(params);
         break;
+      case 8:
+        list[key].res = await handleSendTransaction(params);
+        break;
+      case 9:
+        list[key].res = await handleSendAddressTransaction(params);
+        break;
     }
   } catch (error) {
-    console.log(error);
     ElMessage.error(error);
   } finally {
     list[key].loading = false;
@@ -195,7 +245,6 @@ const checkIsEmpty = (arr) => {
 };
 
 const handleCreateAccount = (params) => {
-  console.log("123");
   return new Promise((resolve, reject) => {
     $api.tronManagement.config
       .CreateAccount(params)
@@ -262,6 +311,24 @@ const handleGetNowBlock = (params) => {
   return new Promise((resolve, reject) => {
     $api.tronManagement.config
       .GetNowBlock(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleSendTransaction = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .SendTransaction(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleSendAddressTransaction = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .SendAddressTransaction(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
   });

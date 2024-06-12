@@ -54,6 +54,18 @@ const tronManagement = {
         data: params,
       });
     },
+    SendTransaction(params) {
+      return createAxios({
+        url: `/api/tron/sendTransaction`,
+        data: params,
+      });
+    },
+    SendAddressTransaction(params) {
+      return createAxios({
+        url: `/api/tron/sendAddressTransaction`,
+        data: params,
+      });
+    },
   },
 };
 
