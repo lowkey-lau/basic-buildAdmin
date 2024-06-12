@@ -175,6 +175,18 @@ const list = reactive([
       },
     ],
   },
+  {
+    title: "获取用户所有交易记录（上限1000条）",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "用户地址",
+        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        param: "address",
+      },
+    ],
+  },
 ]);
 
 const handleFunc = async (key = 0) => {
@@ -223,6 +235,9 @@ const handleFunc = async (key = 0) => {
         break;
       case 9:
         list[key].res = await handleSendAddressTransaction(params);
+        break;
+      case 10:
+        list[key].res = await handleGetTransactionList(params);
         break;
     }
   } catch (error) {
@@ -329,6 +344,15 @@ const handleSendAddressTransaction = (params) => {
   return new Promise((resolve, reject) => {
     $api.tronManagement.config
       .SendAddressTransaction(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetTransactionList = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetTransactionList(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
   });

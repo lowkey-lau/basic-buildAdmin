@@ -66,6 +66,12 @@ const tronManagement = {
         data: params,
       });
     },
+    GetTransactionList(params) {
+      return createAxios({
+        url: `/api/tron/getTransactionList`,
+        data: params,
+      });
+    },
   },
 };
 
