@@ -1,12 +1,12 @@
 <!-- Tron功能管理 - 测试用例 -->
 <template>
   <div class="initPanel overflow-auto">
-    <el-collapse v-model="activeName">
+    <el-collapse v-model="activeName" accordion>
       <el-collapse-item :name="index" v-for="(item, index) in list" :key="index">
         <template #title>
           <div class="space-x-2">
             <el-tag type="warning" size="large">{{ item.title }}</el-tag>
-            <el-tag type="info" size="large">{{ `KEY - ${index}` }}</el-tag>
+            <el-tag type="info">{{ `KEY - ${index}` }}</el-tag>
           </div>
         </template>
 
@@ -63,7 +63,7 @@ const list = reactive([
     formList: [
       {
         label: "私钥",
-        value: "bfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
+        value: "cfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
         param: "privateKey",
       },
     ],
@@ -133,12 +133,12 @@ const list = reactive([
     formList: [
       {
         label: "私钥",
-        value: "",
+        value: "cfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
         param: "privateKey",
       },
       {
         label: "目标地址",
-        value: "",
+        value: "TYmviXJkWhGdx2CrYGHL7Cd7vJLEgMQKTV",
         param: "toAddress",
       },
       {
@@ -155,17 +155,17 @@ const list = reactive([
     formList: [
       {
         label: "私钥",
-        value: "",
+        value: "cfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
         param: "privateKey",
       },
       {
         label: "合约地址",
-        value: "",
+        value: "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj",
         param: "contractAddress",
       },
       {
         label: "目标地址",
-        value: "",
+        value: "TYmviXJkWhGdx2CrYGHL7Cd7vJLEgMQKTV",
         param: "toAddress",
       },
       {
