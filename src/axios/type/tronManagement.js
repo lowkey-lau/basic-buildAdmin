@@ -24,6 +24,36 @@ const tronManagement = {
         data: params,
       });
     },
+    GetBalance(params) {
+      return createAxios({
+        url: `/api/tron/getBalance`,
+        data: params,
+      });
+    },
+    GetAddressBalance(params) {
+      return createAxios({
+        url: `/api/tron/getAddressBalance`,
+        data: params,
+      });
+    },
+    GetTransactionInfoById(params) {
+      return createAxios({
+        url: `/api/tron/getTransactionInfoById`,
+        data: params,
+      });
+    },
+    GetTransactionInfoByBlockNum(params) {
+      return createAxios({
+        url: `/api/tron/getTransactionInfoByBlockNum`,
+        data: params,
+      });
+    },
+    GetNowBlock(params) {
+      return createAxios({
+        url: `/api/tron/getNowBlock`,
+        data: params,
+      });
+    },
   },
 };
 

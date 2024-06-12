@@ -1,17 +1,22 @@
 <!-- Tron功能管理 - 测试用例 -->
 <template>
-  <div class="initPanel">
+  <div class="initPanel overflow-auto">
     <el-collapse v-model="activeName">
       <el-collapse-item :name="index" v-for="(item, index) in list" :key="index">
         <template #title>
-          <el-tag type="warning" size="large">{{ item.title }}</el-tag>
+          <div class="space-x-2">
+            <el-tag type="warning" size="large">{{ item.title }}</el-tag>
+            <el-tag type="info" size="large">{{ `KEY - ${index}` }}</el-tag>
+          </div>
         </template>
 
         <div class="space-y-2 pt-2">
           <div class="space-y-2">
-            <div v-if="item.form">
-              <el-input type="textarea" v-model="item.form.mnemonic" placeholder="助记词" v-if="index == 1" />
-              <el-input type="textarea" v-model="item.form.privateKey" placeholder="私钥地址" v-if="index == 2" />
+            <div v-if="item.formList" class="space-y-2">
+              <div class="flex items-center space-x-2" v-for="(subItem, subIndex) in item.formList" :key="subIndex">
+                <span class="font-bold whitespace-nowrap">{{ subItem.label }}</span>
+                <el-input class="w-full" v-model="subItem.value" />
+              </div>
             </div>
             <el-button type="primary" :loading="item.loading" size="small" @click="handleFunc(index)">调用接口</el-button>
           </div>
@@ -30,6 +35,7 @@
 import { ref, reactive } from "vue";
 import $api from "@/axios/api.js";
 import { ElMessage } from "element-plus";
+import { reject } from "lodash-es";
 
 const activeName = ref(null);
 const list = reactive([
@@ -42,17 +48,83 @@ const list = reactive([
     title: "导入助记词生成钱包地址",
     loading: false,
     res: null,
-    form: {
-      mnemonic: "",
-    },
+    formList: [
+      {
+        label: "助记词",
+        value: "acid equip gloom zero whale garment journey cry unable crane amazing rib",
+        param: "mnemonic",
+      },
+    ],
   },
   {
     title: "导入私钥生成钱包地址",
     loading: false,
     res: null,
-    form: {
-      privateKey: "",
-    },
+    formList: [
+      {
+        label: "私钥",
+        value: "bfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
+        param: "privateKey",
+      },
+    ],
+  },
+  {
+    title: "获取用户主网币余额",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "用户地址",
+        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        param: "address",
+      },
+    ],
+  },
+  {
+    title: "获取用户TRC20余额",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "TRC20合约地址",
+        value: "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj",
+        param: "contractAddress",
+      },
+      {
+        label: "用户地址",
+        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        param: "address",
+      },
+    ],
+  },
+  {
+    title: "根据交易哈希查询交易明细",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "哈希地址",
+        value: "921cb9f044ab87e8c38870db9dece424a9e7f6c2c1e2159645ff6322cf49e391",
+        param: "hxID",
+      },
+    ],
+  },
+  {
+    title: "根据块高查询交易明细",
+    loading: false,
+    res: null,
+    formList: [
+      {
+        label: "块高",
+        value: "44842895",
+        param: "blockNum",
+      },
+    ],
+  },
+  {
+    title: "获取最新的区块",
+    loading: false,
+    res: null,
   },
 ]);
 
@@ -60,72 +132,138 @@ const form = reactive({
   privateKey: "",
 });
 
-const handleFunc = (key = 0) => {
-  console.log(key);
-  switch (key) {
-    case 0:
-      handleCreateAccount(key);
-      break;
-    case 1:
-      handleImportMnemonic(key);
-      break;
-    case 2:
-      handleImportPrivateKey(key);
-      break;
+const handleFunc = async (key = 0) => {
+  let params = {};
+
+  if (list[key].formList && checkIsEmpty(list[key].formList)) {
+    return ElMessage.warning("参数不能为空");
+  }
+
+  if (list[key].formList) {
+    list[key].formList.forEach((item, index) => {
+      params[item.param] = item.value;
+    });
+  }
+
+  try {
+    list[key].loading = true;
+
+    switch (key) {
+      case 0:
+        list[key].res = await handleCreateAccount(params);
+        break;
+      case 1:
+        list[key].res = await handleImportMnemonic(params);
+        break;
+      case 2:
+        list[key].res = await handleImportPrivateKey(params);
+        break;
+      case 3:
+        list[key].res = await handleGetBalance(params);
+        break;
+      case 4:
+        list[key].res = await handleGetAddressBalance(params);
+        break;
+      case 5:
+        list[key].res = await handleGetTransactionInfoById(params);
+        break;
+      case 6:
+        list[key].res = await handleGetTransactionInfoByBlockNum(params);
+        break;
+      case 7:
+        list[key].res = await handleGetNowBlock(params);
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    ElMessage.error(error);
+  } finally {
+    list[key].loading = false;
   }
 };
 
-const handleCreateAccount = (e) => {
-  list[e].loading = true;
-  $api.tronManagement.config
-    .CreateAccount()
-    .then((res) => {
-      list[e].loading = false;
-      list[e].res = res;
-    })
-    .catch((error) => {
-      console.log(error);
-      list[e].loading = false;
-    });
+const checkIsEmpty = (arr) => {
+  let bool = false;
+
+  arr.forEach((element) => {
+    if (element.value == "") {
+      bool = true;
+    }
+  });
+
+  return bool;
 };
 
-const handleImportMnemonic = (e) => {
-  if (list[e].form.mnemonic == "") {
-    return ElMessage.warning("请输入助记词");
-  }
-
-  list[e].loading = true;
-  $api.tronManagement.config
-    .ImportMnemonic({
-      mnemonic: list[e].form.mnemonic,
-    })
-    .then((res) => {
-      list[e].loading = false;
-      list[e].res = res;
-    })
-    .catch((error) => {
-      console.log(error);
-      list[e].loading = false;
-    });
+const handleCreateAccount = (params) => {
+  console.log("123");
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .CreateAccount(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
 };
 
-const handleImportPrivateKey = (e) => {
-  if (list[e].form.privateKey == "") {
-    return ElMessage.warning("请输入私钥");
-  }
+const handleImportMnemonic = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .ImportMnemonic(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
 
-  list[e].loading = true;
-  $api.tronManagement.config
-    .ImportPrivateKey({
-      privateKey: list[e].form.privateKey,
-    })
-    .then((res) => {
-      list[e].loading = false;
-      list[e].res = res;
-    })
-    .catch((error) => {
-      console.log(error);
-      list[e].loading = false;
-    });
+const handleImportPrivateKey = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .ImportPrivateKey(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetBalance = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetBalance(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetAddressBalance = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetAddressBalance(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetTransactionInfoById = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetTransactionInfoById(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetTransactionInfoByBlockNum = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetTransactionInfoByBlockNum(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
+};
+
+const handleGetNowBlock = (params) => {
+  return new Promise((resolve, reject) => {
+    $api.tronManagement.config
+      .GetNowBlock(params)
+      .then((res) => resolve(res))
+      .catch((error) => reject(error));
+  });
 };
 </script>
