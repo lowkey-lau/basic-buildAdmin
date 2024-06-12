@@ -3,8 +3,14 @@
   <div class="initPanel">
     <div class="flex space-x-2 h-full">
       <div class="flex flex-col space-y-2 min-w-[120px] bg-black/20">
-        <div v-for="item in 4" :key="item.id" class="cursor-pointer hover:bg-orange/20 p-2">
-          <div class="">user_{{ item }}</div>
+        <div
+          v-for="item in state.userList"
+          :key="item.id"
+          class="cursor-pointer hover:bg-orange/20 p-2"
+          :class="[{ 'bg-orange': item.account == state.selectAccount }]"
+          @click="handleSelectAccount(item.account)"
+        >
+          <div class="">{{ item.account }}</div>
         </div>
       </div>
       <div class="flex flex-col h-full border-2 border-solid border-black w-full">
@@ -38,9 +44,12 @@ const state = reactive({
   pageTitle: "数据管理 - 综合数据",
   loading: false,
 
+  userList: [],
   socket: null,
 
   msgList: [],
+
+  selectAccount: "",
 });
 
 const inputValue = ref("");
@@ -48,7 +57,7 @@ const inputValue = ref("");
 const handleCommit = () => {
   if (inputValue.value) {
     state.socket.emit("send_message", {
-      to_account: "lowkey",
+      to_account: state.selectAccount,
       data: inputValue.value,
     });
     inputValue.value = "";
@@ -63,7 +72,31 @@ const handleDiscover = () => {
   }
 };
 
+const handleSelectAccount = (e) => {
+  console.log(e);
+  if (e != state.selectAccount) {
+    state.selectAccount = e;
+    state.msgList = [];
+  }
+};
+
+const getList = () => {
+  const adminInfo = useAdminInfo();
+
+  $api.userManagement
+    .GetList({
+      pageNum: 1,
+      pageSize: 20,
+    })
+    .then((res) => {
+      state.userList = res.data.list.filter((item) => item.account != adminInfo.account);
+    })
+    .catch((error) => console.log(error));
+};
+
 onMounted(() => {
+  getList();
+
   const adminInfo = useAdminInfo();
 
   state.socket = io("ws://127.0.0.1:3000", {
