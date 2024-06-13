@@ -1,11 +1,11 @@
 <!-- Tron功能管理 - 测试用例 -->
 <template>
   <div class="initPanel overflow-auto">
-    <el-collapse v-model="activeName" accordion>
+    <el-collapse v-model="activeName">
       <el-collapse-item :name="index" v-for="(item, index) in list" :key="index">
         <template #title>
           <div class="space-x-2">
-            <el-tag type="warning" size="large">{{ item.title }}</el-tag>
+            <el-tag type="warning">{{ item.title }}</el-tag>
             <el-tag type="info">{{ `KEY - ${index}` }}</el-tag>
           </div>
         </template>
@@ -51,7 +51,7 @@ const list = reactive([
     formList: [
       {
         label: "助记词",
-        value: "acid equip gloom zero whale garment journey cry unable crane amazing rib",
+        value: "conduct galaxy hold green lock fresh panic town plastic door critic solution",
         param: "mnemonic",
       },
     ],
@@ -104,7 +104,7 @@ const list = reactive([
     formList: [
       {
         label: "哈希地址",
-        value: "921cb9f044ab87e8c38870db9dece424a9e7f6c2c1e2159645ff6322cf49e391",
+        value: "",
         param: "hxID",
       },
     ],
