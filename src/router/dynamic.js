@@ -4,7 +4,10 @@
 
 const menus = [
   // formatMenuItem("数据概览", "dashboard/index", "fa fa-tachometer"),
-  formatMenuDir("用户信息", "userManagement", "fa fa-drivers-license", [formatMenuItem("用户列表", "userManagement/list", "fa fa-user")]),
+  formatMenuDir("用户信息", "userManagement", "fa fa-drivers-license", [
+    formatMenuItem("用户列表", "userManagement/list", "fa fa-user"),
+    formatMenuItem("钱包地址列表", "userManagement/address", "fa fa-user"),
+  ]),
   formatMenuDir("聊天系统", "chatManagement", "fa fa-drivers-license", [formatMenuItem("聊天页面", "chatManagement/index", "fa fa-user")]),
   formatMenuDir("Tron功能系统", "tronManagement", "fa fa-drivers-license", [formatMenuItem("测试用例", "tronManagement/config", "fa fa-user")]),
   // formatMenuDir("数据管理", "dataManagement", "fa fa-database", [formatMenuItem("综合数据", "dataManagement/comprehensiveData")]),

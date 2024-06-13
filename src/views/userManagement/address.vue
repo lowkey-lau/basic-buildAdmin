@@ -1,31 +1,12 @@
-<!-- 用户管理 - 用户列表 -->
+<!-- 用户管理 - 用户钱包 -->
 <template>
   <div class="initPanel">
     <el-table class="initTable" :data="state.requestResult" v-loading="state.loading" element-loading-text="加载中" border>
-      <el-table-column min-width="120" align="center" prop="account" label="用户名" />
-      <el-table-column min-width="120" align="center" prop="nickname" label="昵称" />
-      <el-table-column min-width="60" align="center" prop="identity" label="身份" />
-      <el-table-column min-width="60" align="center" prop="sex" label="性别">
-        <template #default="scope">
-          <el-tag :type="scope.row.sex == 0 ? 'primary' : 'danger'">{{ state.sexStr[scope.row.sex] }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="120" align="center" prop="email" label="邮箱" />
-      <el-table-column min-width="120" align="center" label="头像地址">
-        <template #default="scope"><el-avatar :src="scope.row.image_url" v-if="scope.row.image_url && scope.row.image_url !== ''" /></template>
-      </el-table-column>
-      <el-table-column min-width="180" align="center" prop="create_time" label="注册时间" />
-      <el-table-column min-width="90" align="center" label="操作" fixed="right">
-        <template #default="scope">
-          <el-button type="warning" size="small" @click="editInfo(scope.row)">修改</el-button>
-
-          <el-popconfirm title="确定删除吗?" @confirm="confirmEvent(scope.row)" v-if="scope.row.identityId != 999">
-            <template #reference>
-              <el-button type="danger" size="small">删除</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" prop="account" label="用户名" />
+      <el-table-column align="center" prop="address" label="地址" />
+      <el-table-column align="center" prop="mnemonic" label="助记词" />
+      <el-table-column align="center" prop="private_key" label="私钥" />
+      <el-table-column align="center" prop="create_time" label="创建时间" />
     </el-table>
 
     <div class="initPagination">
@@ -40,13 +21,10 @@
         @current-change="handleCurrentChange"
       />
     </div>
-
-    <DialogByModifyInfo :visible="state.visibleByModifyInfo" :userInfo="state.selectItem" @changeVisible="changeVisible" @searchData="searchData" />
   </div>
 </template>
 
 <script setup>
-import DialogByModifyInfo from "./components/DialogByModifyInfo.vue";
 import { onMounted, reactive } from "vue";
 import { useServer } from "@/stores/server";
 import { GetFormatZoomDateBySeconds, GetDatePickerValue, GetTimestampByZoom, GetEndTimestampByZoom } from "@/utils/timeTools";
@@ -60,12 +38,6 @@ const state = reactive({
   loading: false,
 
   requestResult: [],
-  selectItem: {},
-  sexStr: {
-    0: "男",
-    1: "女",
-  },
-
   visibleByModifyInfo: false,
 
   currentPage: 1,
@@ -90,7 +62,7 @@ const searchData = async () => {
 const getRequestData = (flag = false) => {
   return new Promise((resolve, reject) => {
     $api.userManagement
-      .GetList({
+      .GetAddressList({
         pageNum: state.currentPage,
         pageSize: state.pageSize,
       })

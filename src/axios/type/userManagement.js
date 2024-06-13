@@ -25,6 +25,12 @@ const userManagement = {
       data: params,
     });
   },
+  GetAddressList(params) {
+    return createAxios({
+      url: `/api/address/getAddressList`,
+      data: params,
+    });
+  },
 };
 
 export default userManagement;
