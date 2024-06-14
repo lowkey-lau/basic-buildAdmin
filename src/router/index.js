@@ -3,6 +3,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { staticRoutes } from "@/router/static";
 import { loading } from "@/utils/loading";
+import { removeAllPending } from "@/axios";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -17,7 +18,7 @@ router.beforeEach((to, from, next) => {
     window.existLoading = true;
   }
 
-  // console.log("to, from", to, from);
+  removeAllPending();
 
   next();
 });

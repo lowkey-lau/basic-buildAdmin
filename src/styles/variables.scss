@@ -25,11 +25,21 @@ $border-color: map.merge(
   $border-color
 );
 
+// Font
+$font-color: () !default;
+$font-color: map.merge(
+  (
+    "": #000000,
+  ),
+  $font-color
+);
+
 :root {
   @include set-css-var-value("main-space", $main-space);
   @include set-css-var-value("color-primary-light", $primary-light);
   @include set-component-css-var("bg-color", $bg-color);
   @include set-component-css-var("border-color", $border-color);
+  @include set-component-css-var("font-color", $font-color);
 }
 
 $ImgPath: "@/assets/images/";

@@ -72,6 +72,12 @@ const tronManagement = {
         data: params,
       });
     },
+    GetApiTradeLog(params) {
+      return createAxios({
+        url: `/api/tron/getApiTradeLog`,
+        data: params,
+      });
+    },
   },
 };
 

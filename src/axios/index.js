@@ -1,10 +1,13 @@
 import axios from "axios";
 import qs from "qs";
 import requestUrl from "./url.js";
+import { ElNotification } from "element-plus";
 import { useServer } from "@/stores/server";
 import { useAdminInfo } from "@/stores/adminInfo";
-import { EleNBox } from "@/utils/ele";
 import { useRouter } from "vue-router";
+
+window.tokenRefreshing = false;
+const pendingMap = new Map();
 
 /**
  * 根据运行环境获取基础请求URL
@@ -20,19 +23,15 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
 
   const Axios = axios.create({
     baseURL: getUrl(),
+    withCredentials: true,
     method: axiosConfig.method || "POST",
-    timeout: 1000 * 50,
-    headers: {
-      post: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        Accept: "application/json",
-      },
-    },
+    // timeout: 1000 * 50,
     responseType: "json",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      Accept: "application/json",
+    },
   });
-
-  // instance.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
-  // instance.defaults.headers.post["Accept"] = "application/json";
 
   options = Object.assign(
     {
@@ -47,18 +46,22 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
     options
   );
 
+  // 请求拦截
   Axios.interceptors.request.use(
     (config) => {
+      removePending(config);
+      options.CancelDuplicateRequest && addPending(config);
+
       // let requestData = config.data || {};
 
-      if (config.headers && axiosConfig.headers) {
-        axiosConfig.headers["Content-Type"] = axiosConfig.headers;
-        // const token = adminInfo.getToken();
-        // if (token) config.headers.Authorization = token;
-      }
+      // if (config.headers) {
+      //   // const token = adminInfo.getToken();
+      //   // if (token) config.headers.Authorization = `Token ${token}`;
+      //   config.headers.Cookie =
+      //     "CF_Authorization=eyJhbGciOiJSUzI1NiIsImtpZCI6IjMzNDQ2OTVjOGRjYWU0OTY3MzQ3NWIwMTQ2ZTExY2IwZDAyMWNhNGE1YjI0YTllNjBkMmFkMjYwY2E2NmQwYjIifQ.eyJhdWQiOlsiOGQxYjM2OWY1ODRiYTk2ZGJiZTM5MzJiMjNhYWFmYmNiZTkzMDMwY2NiYTg0YzRmYTFjMTcyZjE5NzFlMTRjYiJdLCJlbWFpbCI6ImEzMTc2MDU3NDdAZ21haWwuY29tIiwiZXhwIjoxNzE3NTk1ODIyLCJpYXQiOjE3MTc1MDk0MjIsIm5iZiI6MTcxNzUwOTQyMiwiaXNzIjoiaHR0cHM6Ly9tb3JwaGEtb3BtLmNsb3VkZmxhcmVhY2Nlc3MuY29tIiwidHlwZSI6ImFwcCIsImlkZW50aXR5X25vbmNlIjoiYTN2dExrWE04NUxJQUd3RiIsInN1YiI6ImU4ZThhMGVlLTlmOTAtNWVkNy04NGE3LTc0ZTVjOGQ5MDA1MiIsImNvdW50cnkiOiJISyJ9.kjjm4xOrwZtkJ-MMvCrU5R7AFptfhaI2PvdoKEXGgxBjjyOmaRSTwPI0xTwdfPRHXxy8QFN1qRJ9T4SQB-4Lhh8o3mLu0xanCq8saqIf5XhlI5a11GpwI2S9c0jLXWAMTEqGt48zvELq0zkGldf-niTMpEo9WhJkjXBLSJP_lVn3w9jeX9IZZcboQhebtAHx5PmOfYmYRIyxS4_h7ptvf5uE-EuQKXwYqnG_l5SU6LDyjTTJzrdn0qz_lvvAVDOsqPfr_SfFh675CsOKm9dceyGXNgGwdYUbLyiI-ceMhXa3EDvInl7T-hB1Q5tOQ6PQC47A-6KBZnTZ60k0kaqFkg;CF_AppSession=nfc13045cc02f695d";
+      // }
 
       // if (config.method === "post") {
-      //   requestData.user_id = adminInfo.getUserId();
       //   config.data = qs.stringify({
       //     ...requestData,
       //   });
@@ -71,23 +74,30 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
     }
   );
 
+  // 响应拦截
   Axios.interceptors.response.use(
-    (resource) => {
-      if (resource.status == 200) {
-        if (resource.data.code == 0) {
-          return Promise.resolve(resource.data);
+    (response) => {
+      removePending(response.config);
+      options.loading && closeLoading(options); // 关闭loading
+
+      if (response.status == 200) {
+        if (response.data.code == 0) {
+          return Promise.resolve(response.data);
         }
 
-        if (resource.data.code == 996) {
+        if (response.data.code == 1001) {
           router.push("/login");
         }
       }
-      EleNBox.error(resource.data.msg);
-      return Promise.reject(resource.data.msg);
+      ElNotification.error(response.data.msg || response.data.error || "Error");
+      return Promise.reject(response.data.msg || response.data.error || "Error");
     },
     (error) => {
+      error.config && removePending(error.config);
+      options.loading && closeLoading(options); // 关闭loading
+
       if (error.config.timeout >= 50000) {
-        EleNBox.error("请求超时");
+        ElNotification.error("请求超时");
       }
 
       return Promise.reject(error);
@@ -137,17 +147,30 @@ function removePending(config) {
 }
 
 /**
+ * 删除所有请求
+ */
+
+export function removeAllPending() {
+  pendingMap.forEach((item) => {
+    item.cancelToken;
+    pendingMap.delete(item);
+  });
+}
+
+/**
  * 生成每个请求的唯一key
  */
 function getPendingKey(config) {
   let { data } = config;
+
   const { url, method, params, headers } = config;
-  if (typeof data === "string") data = JSON.parse(data); // response里面返回的config.data是个字符串对象
+  if (typeof data === "string") data = qs.parse(data); // response里面返回的config.data是个字符串对象
+
   return [
     url,
     method,
     headers && headers.batoken ? headers.batoken : "",
-    headers && headers["lowey-user-token"] ? headers["lowey-user-token"] : "",
+    headers && headers["lowkey-user-token"] ? headers["lowkey-user-token"] : "",
     JSON.stringify(params),
     JSON.stringify(data),
   ].join("&");

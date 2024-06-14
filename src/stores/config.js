@@ -39,7 +39,7 @@ export const useConfig = defineStore(
       // 是否水平折叠收起菜单
       menuCollapse: false,
       // 是否只保持一个子菜单的展开(手风琴)
-      menuUniqueOpened: true,
+      menuUniqueOpened: false,
       // 显示菜单栏顶栏(LOGO)
       menuShowTopBar: true,
 
@@ -56,6 +56,7 @@ export const useConfig = defineStore(
       headerBarHoverBackground: ["#f5f5f5", "#18222c"],
 
       // 图标颜色
+      textColor: ["#000000", "#ffffff"],
       iconColor: ["#000000", "#f5f5f5"],
     });
 

@@ -9,7 +9,10 @@ const menus = [
     formatMenuItem("钱包地址列表", "userManagement/address", "fa fa-user"),
   ]),
   formatMenuDir("聊天系统", "chatManagement", "fa fa-drivers-license", [formatMenuItem("聊天页面", "chatManagement/index", "fa fa-user")]),
-  formatMenuDir("Tron功能系统", "tronManagement", "fa fa-drivers-license", [formatMenuItem("测试用例", "tronManagement/config", "fa fa-user")]),
+  formatMenuDir("Tron功能系统", "tronManagement", "fa fa-drivers-license", [
+    formatMenuItem("测试用例", "tronManagement/config", "fa fa-user"),
+    formatMenuItem("交易记录", "tronManagement/log", "fa fa-user"),
+  ]),
   // formatMenuDir("数据管理", "dataManagement", "fa fa-database", [formatMenuItem("综合数据", "dataManagement/comprehensiveData")]),
   // formatMenuDir("提现管理", "withdrawalManagement", "fa fa-money", [formatMenuItem("提现审核", "withdrawalManagement/withdrawalAudit", "fa fa-gavel")]),
 ];

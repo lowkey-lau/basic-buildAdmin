@@ -21,12 +21,6 @@ const staticRoutes = [
     name: "adminLogin",
     component: () => import("@/views/login/index.vue"),
   },
-  // {
-  //   path: "/index",
-  //   name: "index",
-  //   component: () => import("@/views/index.vue"),
-  //   redirect: "adminMainLoading",
-  // },
   {
     // 后台找不到页面了-可能是路由未加载上
     path: "/:path(.*)*",

@@ -22,7 +22,17 @@ $border-color: map.merge(
   $border-color
 );
 
+// Font
+$font-color: () !default;
+$font-color: map.merge(
+  (
+    "": #ffffff,
+  ),
+  $font-color
+);
+
 html.dark {
   @include set-component-css-var("bg-color", $bg-color);
   @include set-component-css-var("border-color", $border-color);
+  @include set-component-css-var("font-color", $font-color);
 }
