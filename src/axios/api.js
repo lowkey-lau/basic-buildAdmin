@@ -4,6 +4,7 @@ import dashboard from "./type/dashboard";
 import dataManagement from "./type/dataManagement";
 import userManagement from "./type/userManagement";
 import tronManagement from "./type/tronManagement";
+import ethManagement from "./type/ethManagement";
 
 /**
  * 导出接口
@@ -15,4 +16,5 @@ export default {
   dataManagement,
   userManagement,
   tronManagement,
+  ethManagement,
 };

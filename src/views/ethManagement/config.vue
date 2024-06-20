@@ -1,4 +1,4 @@
-<!-- Tron功能管理 - 测试用例 -->
+<!-- ETH功能管理 - 测试用例 -->
 <template>
   <div class="initPanel overflow-auto">
     <el-collapse v-model="activeName">
@@ -50,7 +50,7 @@ const list = reactive([
     formList: [
       {
         label: "助记词",
-        value: "conduct galaxy hold green lock fresh panic town plastic door critic solution",
+        value: "exhaust vapor mixture recycle sad young parent salute chase air curious visit",
         param: "mnemonic",
       },
     ],
@@ -62,7 +62,7 @@ const list = reactive([
     formList: [
       {
         label: "私钥",
-        value: "bfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
+        value: "0xd39825ae8b558e143b0f3e8347520fbf594bb30d4e1bbf3a5c22e1ca58340577",
         param: "privateKey",
       },
     ],
@@ -74,24 +74,24 @@ const list = reactive([
     formList: [
       {
         label: "用户地址",
-        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        value: "0x13af0a25C8EA8d45A3E20B4f6b987035e01ED302",
         param: "address",
       },
     ],
   },
   {
-    title: "获取用户TRC-20余额",
+    title: "获取用户代币余额",
     loading: false,
     res: null,
     formList: [
       {
-        label: "TRC-20合约地址",
-        value: "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj",
+        label: "代币合约地址",
+        value: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
         param: "contractAddress",
       },
       {
         label: "用户地址",
-        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        value: "0x13af0a25C8EA8d45A3E20B4f6b987035e01ED302",
         param: "address",
       },
     ],
@@ -103,7 +103,7 @@ const list = reactive([
     formList: [
       {
         label: "哈希地址",
-        value: "",
+        value: "0x5c06763f204d4b33cb9f0311537a44af01e926aaeb9dcc73958ba82cacf16437",
         param: "hxID",
       },
     ],
@@ -115,7 +115,7 @@ const list = reactive([
     formList: [
       {
         label: "块高",
-        value: "47643985",
+        value: "6139215",
         param: "blockNum",
       },
     ],
@@ -126,18 +126,18 @@ const list = reactive([
     res: null,
   },
   {
-    title: "主网币（TRX）转账",
+    title: "主网币转账",
     loading: false,
     res: null,
     formList: [
       {
         label: "私钥",
-        value: "bfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
+        value: "0xd39825ae8b558e143b0f3e8347520fbf594bb30d4e1bbf3a5c22e1ca58340577",
         param: "privateKey",
       },
       {
         label: "目标地址",
-        value: "TYmviXJkWhGdx2CrYGHL7Cd7vJLEgMQKTV",
+        value: "0x56eD6Fe8C4A8E7454E727cdA4a531f986332De7E",
         param: "toAddress",
       },
       {
@@ -154,17 +154,17 @@ const list = reactive([
     formList: [
       {
         label: "私钥",
-        value: "bfb14195368cd46365c14631327f7ef1ecc2a6dc313b66e8f5f192739c73c952",
+        value: "0xd39825ae8b558e143b0f3e8347520fbf594bb30d4e1bbf3a5c22e1ca58340577",
         param: "privateKey",
       },
       {
         label: "合约地址",
-        value: "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj",
+        value: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
         param: "contractAddress",
       },
       {
         label: "目标地址",
-        value: "TYmviXJkWhGdx2CrYGHL7Cd7vJLEgMQKTV",
+        value: "0x56eD6Fe8C4A8E7454E727cdA4a531f986332De7E",
         param: "toAddress",
       },
       {
@@ -181,7 +181,7 @@ const list = reactive([
     formList: [
       {
         label: "用户地址",
-        value: "TXpQpC14yYKbjdmXR5W6p3vLsrAn4MwXzn",
+        value: "0x13af0a25C8EA8d45A3E20B4f6b987035e01ED302",
         param: "address",
       },
     ],
@@ -260,7 +260,7 @@ const checkIsEmpty = (arr) => {
 
 const handleCreateAccount = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .CreateAccount(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -269,7 +269,7 @@ const handleCreateAccount = (params) => {
 
 const handleImportMnemonic = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .ImportMnemonic(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -278,7 +278,7 @@ const handleImportMnemonic = (params) => {
 
 const handleImportPrivateKey = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .ImportPrivateKey(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -287,7 +287,7 @@ const handleImportPrivateKey = (params) => {
 
 const handleGetBalance = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetBalance(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -296,7 +296,7 @@ const handleGetBalance = (params) => {
 
 const handleGetAddressBalance = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetContractBalance(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -305,7 +305,7 @@ const handleGetAddressBalance = (params) => {
 
 const handleGetTransactionInfoById = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetTransactionInfoById(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -314,7 +314,7 @@ const handleGetTransactionInfoById = (params) => {
 
 const handleGetTransactionInfoByBlockNum = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetTransactionInfoByBlockNum(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -323,7 +323,7 @@ const handleGetTransactionInfoByBlockNum = (params) => {
 
 const handleGetNowBlock = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetLatestBlock(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -332,7 +332,7 @@ const handleGetNowBlock = (params) => {
 
 const handleSendTransaction = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .SendTransaction(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -341,7 +341,7 @@ const handleSendTransaction = (params) => {
 
 const handleSendAddressTransaction = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .SendContractTransaction(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
@@ -350,7 +350,7 @@ const handleSendAddressTransaction = (params) => {
 
 const handleGetTransactionList = (params) => {
   return new Promise((resolve, reject) => {
-    $api.tronManagement.config
+    $api.ethManagement.config
       .GetTransactionList(params)
       .then((res) => resolve(res))
       .catch((error) => reject(error));
