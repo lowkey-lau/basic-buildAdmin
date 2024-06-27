@@ -31,6 +31,12 @@ const userManagement = {
       data: params,
     });
   },
+  Test(params) {
+    return createAxios({
+      url: `/api/account/test`,
+      data: params,
+    });
+  },
 };
 
 export default userManagement;

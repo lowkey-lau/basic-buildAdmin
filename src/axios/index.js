@@ -28,8 +28,10 @@ const createAxios = (axiosConfig, options = {}, loading = {}) => {
     // timeout: 1000 * 50,
     responseType: "json",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      // Accept: "application/json",
       Accept: "application/json",
+      "Content-Type": "application/json",
     },
   });
 

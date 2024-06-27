@@ -1,6 +1,14 @@
 <!-- 用户管理 - 用户列表 -->
 <template>
   <div class="initPanel">
+    <el-row>
+      <el-input v-model="account" placeholder="account" />
+      <el-input v-model="email" placeholder="email" />
+      <el-button @click="handleTest()"> TEST </el-button>
+    </el-row>
+
+    <el-divider />
+
     <el-table class="initTable" :data="state.requestResult" v-loading="state.loading" element-loading-text="加载中" border>
       <el-table-column min-width="120" align="center" prop="account" label="用户名" />
       <el-table-column min-width="120" align="center" prop="nickname" label="昵称" />
@@ -47,7 +55,7 @@
 
 <script setup>
 import DialogByModifyInfo from "./components/DialogByModifyInfo.vue";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useServer } from "@/stores/server";
 import { GetFormatZoomDateBySeconds, GetDatePickerValue, GetTimestampByZoom, GetEndTimestampByZoom } from "@/utils/timeTools";
 import $api from "@/axios/api.js";
@@ -73,6 +81,25 @@ const state = reactive({
   pageSizes: [20, 50, 100],
   pageCount: 1,
 });
+
+const account = ref("lowkey");
+const email = ref("123456");
+
+const handleTest = () => {
+  ElMessage.success("123");
+
+  $api.userManagement
+    .Test({
+      account: account.value,
+      email: email.value,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 const searchData = async () => {
   state.loading = true;
